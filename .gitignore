@@ -1,0 +1,17 @@
+/build/
+/build-*/
+/dist/
+/.cache/
+/.vscode/
+.DS_Store
+__pycache__/
+*.pyc
+.env
+.env.*
+*.dpapi
+ffmpeg-path.txt
+/AudioExports/
+/MidiTracks/
+/StemTasks/
+*.p12
+*.pfx

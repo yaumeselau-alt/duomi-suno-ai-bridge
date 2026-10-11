@@ -1,0 +1,23 @@
+Duomi Suno AI Bridge — third-party notices
+
+JUCE 9.0.3
+Copyright Raw Material Software Limited.
+The included JUCE notice describes its AGPLv3/commercial licensing options.
+See licenses/JUCE-LICENSE.md and licenses/JUCE.spdx.json for the dependency
+inventory. Original dependency notices remain in the accompanying source kit.
+No licensing choice or commercial entitlement is granted by this installer.
+The source kit includes the application source and the local JUCE source used
+for the build. The installer is prepared for private testing, not publication.
+
+VST3 SDK
+Included through JUCE; see licenses/VST3-LICENSE.txt.
+
+FFmpeg
+Not bundled or redistributed. The user may configure a separately installed
+trusted FFmpeg executable for ISO media audio decoding.
+https://ffmpeg.org/
+
+Packaging references:
+https://jrsoftware.org/isdl-verify.php
+https://developer.apple.com/documentation/xcode/packaging-mac-software-for-distribution
+

@@ -1,0 +1,66 @@
+name: macOS Universal installer
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/macos-package.yml'
+      - 'CMakeLists.txt'
+      - '.gitmodules'
+      - 'lib/JUCE'
+      - 'src/**'
+      - 'tests/**'
+      - 'assets/**'
+      - 'packaging/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-package-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - name: Checkout project and pinned JUCE
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: Show build environment
+        run: |
+          sw_vers
+          uname -m
+          xcodebuild -version
+          cmake --version
+          git -C lib/JUCE rev-parse HEAD
+      - name: Build, test and package
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p build
+          bash packaging/macos/build-package.sh 2>&1 | tee build/macos-package.log
+      - name: Upload Universal test installer
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Duomi-Suno-AI-Bridge-macOS-Universal
+          path: |
+            dist/*macOS-Universal-UNSIGNED.pkg
+            dist/*macOS-Universal-UNSIGNED.pkg.sha256
+            packaging/INSTALL.txt
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload build diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: macOS-build-diagnostics
+          path: |
+            build/macos-package.log
+            build/macos-package.*/build/Testing/Temporary/LastTest.log
+          if-no-files-found: ignore
+          retention-days: 7
