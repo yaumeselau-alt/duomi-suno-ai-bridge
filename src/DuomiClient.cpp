@@ -795,7 +795,7 @@ juce::Result DuomiClient::generate(const juce::String& key,
       "duomi_" + juce::Uuid().toString() + ".mid");
   if (!output.file.replaceWithData(bytes.getData(), bytes.getSize())) {
     output.file.deleteFile();
-    output.file = {};
+    output.file = juce::File{};
     return failure(juce::String::fromUTF8("MIDI 写入磁盘失败"));
   }
   report(juce::String::fromUTF8("完成：") + juce::String(output.noteCount) +

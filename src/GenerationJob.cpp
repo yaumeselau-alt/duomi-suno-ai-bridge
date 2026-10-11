@@ -36,7 +36,7 @@ bool GenerationJob::start(juce::String key, juce::String prompt, bool resume) {
       return false;
     }
     apiKey = key.trim();
-    fileToImport = {};
+    fileToImport = juce::File{};
     restoredBytes.reset();
     description = std::move(prompt);
     resumeTaskId = resume ? state.taskId : juce::String{};
@@ -127,7 +127,7 @@ bool GenerationJob::restore(Snapshot metadata, juce::MemoryBlock bytes,
                           ? "已恢复任务；点击继续查询时才联网。"
                           : "工程设置已恢复"));
     apiKey.clear();
-    fileToImport = {};
+    fileToImport = juce::File{};
     restoredBytes = std::move(bytes);
     restoredName = std::move(name);
     resumeAudioUrl = state.audioUrl;
