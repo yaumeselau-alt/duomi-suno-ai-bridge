@@ -30,6 +30,12 @@ Mac：安装完整 Xcode 和 CMake 3.22+，然后：
 
 ## GitHub 自动构建 Mac 安装包
 
+2026-10-12 已生成首个 Universal 测试安装包（VST3 / AU / 独立程序）：
+[成功构建与下载](https://github.com/yaumeselau-alt/duomi-suno-ai-bridge/actions/runs/38207700838) → Artifacts → **Duomi-Suno-AI-Bridge-macOS-Universal**。
+解压后使用 dist/Duomi-Suno-AI-Bridge-0.0.2-macOS-Universal-UNSIGNED.pkg。本次云端文件保留至 2026-10-26；过期后可按下面步骤重新构建。
+
+包的 SHA256：8986907c2007620fef48cbc9983d4df5eb892520899a8a4bb8a48184d16c3ae3。
+
 仓库 Actions → **macOS Universal installer** → **Run workflow**。
 首次推送源代码也会触发构建；流程编译两个架构、运行离线测试并生成 pkg。
 完成后在该次运行的 Artifacts 下载 **Duomi-Suno-AI-Bridge-macOS-Universal**。
@@ -39,7 +45,7 @@ Mac：安装完整 Xcode 和 CMake 3.22+，然后：
 
 ## 当前限制
 
-- Mac 构建与宿主兼容性以实际 CI / 实机结果为准；构建通过不等于 Live 拖拽与听感验收完成。
+- Mac 已通过 Universal 编译、跨平台离线测试、双架构和 ad-hoc 签名校验、pkg 生成与展开检查；尚未在 Mac Live/AU 宿主进行试听和拖拽验收。
 - Mac 尚未实现 Key 保存，需手动输入；Windows DPAPI 文件不能移植。
 - 部分分轨是 M4A/Opus，需另外安装并配置 FFmpeg。安装包不捆绑第三方 FFmpeg。
 - 云端分轨可能排队超时；继续查询不会重新启动已经失败的任务。

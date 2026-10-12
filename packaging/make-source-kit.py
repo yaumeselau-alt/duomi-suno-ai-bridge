@@ -48,7 +48,8 @@ with zipfile.ZipFile(archive) as z:
     for entry in manifest:
         if hashlib.sha256(z.read(f'{prefix}/{entry["path"]}')).hexdigest() != entry["sha256"]:
             raise RuntimeError(f'Hash mismatch: {entry["path"]}')
-deliverables = sorted(dist.glob(f"Duomi-Suno-AI-Bridge-{version}-*.exe")) + [archive]
+deliverables = (sorted(dist.glob(f"Duomi-Suno-AI-Bridge-{version}-*.exe"))
+                + sorted(dist.glob(f"Duomi-Suno-AI-Bridge-{version}-*.pkg")) + [archive])
 lines = [f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}" for p in deliverables]
 (dist / "SHA256SUMS.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
 print(json.dumps({"archive": str(archive), "files": len(manifest),

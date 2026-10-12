@@ -25,7 +25,10 @@ Windows 10/11，64 位 x64。Release 构建使用静态 MSVC 运行库。
 程序调用 FFmpeg 仅解码本地临时文件，不把 API Key 交给 FFmpeg。
 首次选择每个分轨需要下载；服务端排队或超时不由安装包解决。
 
-macOS 构建材料
+macOS 安装包与构建材料
+已提供 macOS-Universal-UNSIGNED.pkg 测试安装包，含 Intel 与 Apple Silicon 架构。
+保存工程并关闭 DAW 后，在 Mac 上打开 pkg 安装，再启用 Live 的 VST3 系统目录。
+本包尚未完成 Mac 实际安装及 Live/AU 试听、拖拽验收。
 Mac-Source.zip 是源代码与打包材料，不是可安装的 Mac 二进制。
 解压到 Mac 后，在终端运行：
   bash packaging/macos/build-package.sh

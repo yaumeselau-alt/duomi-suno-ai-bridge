@@ -20,8 +20,19 @@ Windows Release: 9 CTest suites pass, including actual VST3 factory, MIDI input
 bus, stereo audio processing and state round-trip checks. The Windows installer
 passed isolated installation, custom-folder upgrade and uninstallation checks.
 Earlier Windows Live playback/dragging was accepted by the project owner.
-The Mac workflow must still build and validate the Universal installer; CI does
-not substitute for manual Live/AU playback and drag testing.
+macOS Universal compilation succeeded on October 12, 2026. All 8 CTest entries
+passed; ApiKeyStoreOffline has no macOS assertions, so these represent 7 effective
+cross-platform suites. VST3, AU and standalone each passed arm64/x86_64 and strict
+ad-hoc signature checks. The pkg was generated and expanded successfully.
+Recovery run 38207700838 reused tested bundles from run 38187749423 (source
+0018d984d137a79017f191de05d3622b5d30ca94), after verifying the artifact SHA256
+and that compiled source files had not changed.
+The downloaded artifact passed ZIP CRC and package checksum verification.
+Manual Mac installation and Live/AU playback/drag testing remain outstanding.
+
+Installer: Duomi-Suno-AI-Bridge-0.0.2-macOS-Universal-UNSIGNED.pkg
+SHA256: 8986907c2007620fef48cbc9983d4df5eb892520899a8a4bb8a48184d16c3ae3
+Build and download: https://github.com/yaumeselau-alt/duomi-suno-ai-bridge/actions/runs/38207700838
 
 ## Build
 

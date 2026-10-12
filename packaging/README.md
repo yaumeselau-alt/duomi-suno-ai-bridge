@@ -2,7 +2,9 @@
 
 Windows 产物：dist/Duomi-Suno-AI-Bridge-0.0.2-Windows-x64-Setup.exe。
 
-Mac 交付材料：dist/Duomi-Suno-AI-Bridge-0.0.2-Mac-Source.zip。这是源码构建包，不是 macOS 安装包。随包包含当前项目、测试、JUCE 源码及依赖说明，未包含个人 Key、工程、音频或日志。
+Mac 安装包：dist/Duomi-Suno-AI-Bridge-0.0.2-macOS-Universal-UNSIGNED.pkg（约 32.6 MB，未公证的 Universal 测试包）。已在 GitHub macOS runner 编译、测试并生成。
+
+Mac 源码材料：dist/Duomi-Suno-AI-Bridge-0.0.2-Mac-Source.zip。这是源码构建包，不是 macOS 安装包。随包包含当前项目、测试、JUCE 源码及依赖说明，未包含个人 Key、工程、音频或日志。
 
 ## Windows
 
@@ -39,7 +41,7 @@ Configure-FFmpeg.cmd 选择另外安装的可信 ffmpeg.exe；本包没有捆绑
 - /Library/Audio/Plug-Ins/Components/Duomi Suno AI Bridge.component
 - /Applications/Duomi Suno AI Bridge.app
 
-目前尚未在 Mac 构建与实机验收；脚本的 Bash 语法检查不等于构建通过。Mac 的 Key 保存当前没有实现，每次打开需手动输入；Windows 的 DPAPI 文件不能移植。当前 ApiKeyStore 测试主体仅 Windows 有效，Mac 测试计数不能当成 Key 功能验证。还需实测 AU 扫描、VST3 加载、试听与拖拽。
+已在 macOS CI 编译并生成 Universal 安装包；尚未进行 Mac 实际安装及宿主验收。Mac 的 Key 保存当前没有实现，每次打开需手动输入；Windows 的 DPAPI 文件不能移植。当前 ApiKeyStore 测试主体仅 Windows 有效，Mac 测试计数不能当成 Key 功能验证。还需实测 AU 扫描、VST3 加载、试听与拖拽。
 
 M4A/Opus 分轨需另装 FFmpeg，再执行：
 
@@ -53,7 +55,7 @@ JUCE 在 Mac 的用户配置目录是 ~/Library/DuomiSunoAIBridge；工具只写
 
     python packaging/make-source-kit.py
 
-只打包明确列出的源码目录和构建材料；不把整个工作区或 build/live-validation 加入压缩包。生成源码清单和 SHA256SUMS.txt。Windows 安装包生成后再运行此脚本，即可更新两份交付物的校验值。
+只打包明确列出的源码目录和构建材料；不把整个工作区或 build/live-validation 加入压缩包。生成源码清单和 SHA256SUMS.txt。Windows 安装包生成后再运行此脚本，即可更新 Windows 安装包、已有 Mac pkg 和源码包的校验值。
 
 第三方许可原文及依赖清单随包保留，见 THIRD_PARTY_NOTICES.txt 和 lib/JUCE。当前交付供私人测试，未替项目选择商业或开源发布许可。
 
@@ -66,10 +68,29 @@ JUCE 在 Mac 的用户配置目录是 ~/Library/DuomiSunoAIBridge；工具只写
 
 Windows Release 的 9 个 CTest 测试集通过。安装包在工作区隔离目录完成实际安装，安装后的 VST3 通过工厂、MIDI 输入总线、立体声输出、音频处理及工程状态往返检查；独立程序启动成功。卸载删除了测试安装的二进制，保留无关文件。实际系统 VST3 未被本轮安装测试替换。未声称已在全新 Windows 或本轮在 Live 内完成试听验收。
 
-PE 依赖检查确认不需要额外 MSVC 运行库 DLL。macOS 两份 Bash 脚本通过语法检查；源码 ZIP 完成 CRC、逐文件 SHA256 核验。Mac 尚无编译/安装验证。Windows 安装包目前未签名。
+PE 依赖检查确认不需要额外 MSVC 运行库 DLL。macOS 两份 Bash 脚本通过语法检查；源码 ZIP 完成 CRC、逐文件 SHA256 核验。Mac 的后续构建与打包结果见下节，实际安装和宿主验收仍待完成。Windows 安装包目前未签名。
 
 ## GitHub Actions
 
 已提供 .github/workflows/macos-package.yml：在 main 的相关源码变更或手动触发时使用标准 macos-15 runner，最多运行 45 分钟。checkout 与 upload-artifact 均固定到官方提交；仓库 token 仅需 contents:read，不传入 Duomi Key 或 Apple 证书。编译成功后保留 Universal 未公证 pkg 14 天，诊断日志保留 7 天。
 
 克隆仓库需要 --recurse-submodules；JUCE gitlink 固定 be29c81492b6151c8ea8d14c840e1311963b3a83（9.0.3）。本地 5347 个官方文件已逐一匹配该提交。Actions 使用 GitHub 账户的可用额度；本流程不修改计费设置。
+
+## macOS CI 交付结果（2026-10-12）
+
+[成功打包记录](https://github.com/yaumeselau-alt/duomi-suno-ai-bridge/actions/runs/38207700838)：复用源提交 0018d984d137a79017f191de05d3622b5d30ca94
+已经通过编译和测试的产物，校验产物 ZIP 的 SHA256 及源文件一致性后生成 pkg。
+三个 bundle 的 arm64/x86_64 检查、严格 ad-hoc 签名校验、pkg 生成和展开检查均通过。
+8 个 CTest 入口通过，其中 ApiKeyStoreOffline 在 Mac 无测试断言；有效跨平台测试集为 7 个。
+
+安装包：Duomi-Suno-AI-Bridge-0.0.2-macOS-Universal-UNSIGNED.pkg
+SHA256：8986907c2007620fef48cbc9983d4df5eb892520899a8a4bb8a48184d16c3ae3
+
+下载后的 ZIP CRC 与 pkg SHA256 已核对。安装包没有 Developer ID 签名或 Apple 公证；
+macOS 可能阻止安装，不能将 ad-hoc 校验通过当成 Gatekeeper 验收。
+本次 Actions 安装包保留至 2026-10-26，已另行保存到本地 dist。
+
+正常构建仍用 macOS Universal installer 工作流。
+macos-repackage.yml 仅用于本次恢复，固定旧产物 ID 和 SHA256，产物过期后无法重用；
+它的 token 额外需要 actions:read。DUOMI_PREBUILT_DIR 仅用于已有可信、测试通过产物的打包恢复，
+不执行重新编译和测试。源码变更应使用正常完整构建。
