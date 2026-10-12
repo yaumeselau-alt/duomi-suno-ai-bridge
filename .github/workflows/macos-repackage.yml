@@ -1,0 +1,65 @@
+name: Recover tested macOS installer
+
+# One-time recovery of the tested October 12 build. Once its artifact expires,
+# use the normal macOS Universal installer workflow for a fresh compilation.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/macos-repackage.yml']
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  package:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - name: Checkout project and pinned JUCE
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+      - name: Verify provenance and restore tested bundles
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          source_sha=0018d984d137a79017f191de05d3622b5d30ca94
+          actual_sha="$(gh api "repos/$GH_REPO/actions/runs/38187749423" --jq .head_sha)"
+          test "$actual_sha" = "$source_sha"
+          git diff --exit-code "$source_sha" HEAD -- CMakeLists.txt .gitmodules lib/JUCE src tests assets
+          mkdir -p build/recovered
+          gh api "repos/$GH_REPO/actions/artifacts/11720835342/zip" > build/tested-products.zip
+          echo "e6f2137a608659bb4247e83aa9b57b5a3f80a078d20d4e1555d85ba4c7d17f3f  build/tested-products.zip" | shasum -a 256 -c -
+          unzip -q build/tested-products.zip -d build/recovered
+          tar -xzf build/recovered/macos-built-products.tar.gz -C build/recovered
+          echo "Reusing bundles from source commit $source_sha, run 38187749423."
+      - name: Package and verify installer
+        shell: bash
+        run: |
+          set -o pipefail
+          DUOMI_PREBUILT_DIR="$PWD/build/recovered" bash packaging/macos/build-package.sh 2>&1 | tee build/macos-repackage.log
+      - name: Upload Universal test installer
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Duomi-Suno-AI-Bridge-macOS-Universal
+          path: |
+            dist/*macOS-Universal-UNSIGNED.pkg
+            dist/*macOS-Universal-UNSIGNED.pkg.sha256
+            packaging/INSTALL.txt
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload packaging diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: macOS-packaging-diagnostics
+          path: build/macos-repackage.log
+          if-no-files-found: ignore
+          retention-days: 7
