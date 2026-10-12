@@ -8,12 +8,12 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
   titleLabel.setFont(juce::Font(juce::FontOptions(20.0f, juce::Font::bold)));
   addAndMakeVisible(titleLabel);
 
-  keyLabel.setText(juce::String::fromUTF8("Duomi API Key"),
+  keyLabel.setText(tr("Duomi API Key"),
                    juce::dontSendNotification);
   addAndMakeVisible(keyLabel);
   keyEditor.setPasswordCharacter('*');
   keyEditor.setMultiLine(false);
-  keyEditor.setTextToShowWhenEmpty(juce::String::fromUTF8("输入 API Key"),
+  keyEditor.setTextToShowWhenEmpty(tr("输入 API Key"),
                                    cyber::muted);
   addAndMakeVisible(keyEditor);
   keyEditor.onTextChange = [this] { keyEdited = true; };
@@ -22,10 +22,10 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
   addAndMakeVisible(keyStatusLabel);
   keyStatusLabel.setFont(juce::Font(juce::FontOptions(12.0f)));
   keyStatusLabel.setJustificationType(juce::Justification::centredRight);
-  saveKeyButton.setTooltip(juce::String::fromUTF8(
+  saveKeyButton.setTooltip(tr(
       "使用当前 Windows 账户加密保存，下次打开自动读取。"));
   forgetKeyButton.setTooltip(
-      juce::String::fromUTF8("移除本机保存的 Key；不影响账户或已提交的任务。"));
+      tr("移除本机保存的 Key；不影响账户或已提交的任务。"));
   saveKeyButton.onClick = [this] {
     audioProcessor.getApiKeyStore().save(keyEditor.getText());
     refreshState();
@@ -35,12 +35,12 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
     refreshState();
   };
 
-  promptLabel.setText(juce::String::fromUTF8("音乐描述 (prompt)"),
+  promptLabel.setText(tr("音乐描述 (prompt)"),
                       juce::dontSendNotification);
   addAndMakeVisible(promptLabel);
   promptEditor.setMultiLine(false);
   promptEditor.setTextToShowWhenEmpty(
-      juce::String::fromUTF8("例如：轻快的钢琴，C 大调"), cyber::muted);
+      tr("例如：轻快的钢琴，C 大调"), cyber::muted);
   promptEditor.setText(audioProcessor.getDescription(), false);
   promptEditor.setInputRestrictions(16000);
   promptEditor.onTextChange = [this] {
@@ -48,7 +48,7 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
   };
   inputRevision = audioProcessor.getInputRevision();
   addAndMakeVisible(promptEditor);
-  bpmLabel.setText(juce::String::fromUTF8("BPM · 滚轮/双击"),
+  bpmLabel.setText(tr("BPM · 滚轮/双击"),
                    juce::dontSendNotification);
   bpmLabel.setColour(juce::Label::textColourId, cyber::purple);
   bpmLabel.setFont(juce::Font(juce::FontOptions(12.0f)));
@@ -61,7 +61,7 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
   generateMidiButton.setColour(juce::TextButton::buttonColourId,
                                juce::Colour(0xff542785));
 
-  generateMidiButton.setButtonText(juce::String::fromUTF8("生成 MIDI"));
+  generateMidiButton.setButtonText(tr("生成 MIDI"));
   addAndMakeVisible(generateMidiButton);
   generateMidiButton.onClick = [this] {
     bpmControl.hideEditor(false);
@@ -78,7 +78,7 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
     refreshState();
   };
 
-  generateAudioButton.setButtonText(juce::String::fromUTF8("加载成品音频"));
+  generateAudioButton.setButtonText(tr("加载成品音频"));
   generateAudioButton.onClick = [this] {
     auto url = audioProcessor.getGenerationJob().getSnapshot().audioUrl;
     if (url.isEmpty())
@@ -90,21 +90,21 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
     }
     refreshState();
   };
-  previewMode.addItem(juce::String::fromUTF8("MIDI 试听"), 1);
-  previewMode.addItem(juce::String::fromUTF8("成品音频"), 2);
-  previewMode.addItem(juce::String::fromUTF8("钢琴柱式和弦"), 3);
-  chordLabel.setText(juce::String::fromUTF8("柱式和弦间隔"),
+  previewMode.addItem(tr("MIDI 试听"), 1);
+  previewMode.addItem(tr("成品音频"), 2);
+  previewMode.addItem(tr("钢琴柱式和弦"), 3);
+  chordLabel.setText(tr("柱式和弦间隔"),
                      juce::dontSendNotification);
   addAndMakeVisible(chordLabel);
-  chordStep.addItem(juce::String::fromUTF8("每 1 拍"), 1);
-  chordStep.addItem(juce::String::fromUTF8("每 2 拍"), 2);
-  chordStep.addItem(juce::String::fromUTF8("每 4 拍"), 4);
+  chordStep.addItem(tr("每 1 拍"), 1);
+  chordStep.addItem(tr("每 2 拍"), 2);
+  chordStep.addItem(tr("每 4 拍"), 4);
   chordStep.setSelectedId(audioProcessor.getChordBeats(),
                           juce::dontSendNotification);
   chordStep.onChange = [this] {
     audioProcessor.setChordBeats(chordStep.getSelectedId());
   };
-  chordStep.setTooltip(juce::String::fromUTF8(
+  chordStep.setTooltip(tr(
       "以当前 BPM 划分间隔；如和弦变化太快或太慢，可修改后重新分析。"));
   addAndMakeVisible(chordStep);
   addAndMakeVisible(chordButton);
@@ -121,9 +121,9 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
     refreshPlayback();
   };
   addAndMakeVisible(previewMode);
-  trackChoice.setName(juce::String::fromUTF8("轨道选择"));
+  trackChoice.setName(tr("轨道选择"));
   trackChoice.setEditableText(false);
-  trackChoice.setTooltip(juce::String::fromUTF8(
+  trackChoice.setTooltip(tr(
       "MIDI 选择已有轨道；音频选择乐器分轨。首次云端分离最多 12 "
       "轨，按基础生成价格 5 倍计费；已完成结果可重复切换。"));
   trackChoice.onChange = [this] {
@@ -153,7 +153,7 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
     chooserActive = true;
     refreshState();
     fileChooser = std::make_unique<juce::FileChooser>(
-        juce::String::fromUTF8("选择试听音频"), juce::File{},
+        tr("选择试听音频"), juce::File{},
         "*.mp3;*.wav;*.flac;*.aiff;*.ogg");
     const juce::Component::SafePointer<DuomiSunoAIBridgeAudioProcessorEditor>
         safe(this);
@@ -172,12 +172,12 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
         });
   };
   addAndMakeVisible(generateAudioButton);
-  midiPreviewLabel.setText(juce::String::fromUTF8("MIDI 试听"),
+  midiPreviewLabel.setText(tr("MIDI 试听"),
                            juce::dontSendNotification);
   addAndMakeVisible(midiPreviewLabel);
-  playButton.setButtonText(juce::String::fromUTF8("播放"));
-  pauseButton.setButtonText(juce::String::fromUTF8("暂停"));
-  stopButton.setButtonText(juce::String::fromUTF8("停止"));
+  playButton.setButtonText(tr("播放"));
+  pauseButton.setButtonText(tr("暂停"));
+  stopButton.setButtonText(tr("停止"));
   for (auto* button : {&playButton, &pauseButton, &stopButton}) {
     button->setTooltip(button->getButtonText());
     button->setEnabled(false);
@@ -185,7 +185,7 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
   }
 
   addAndMakeVisible(dragHintLabel);
-  dragHintLabel.setText(juce::String::fromUTF8("按住下方图形拖入 DAW"),
+  dragHintLabel.setText(tr("按住下方图形拖入 DAW"),
                         juce::dontSendNotification);
   dragHintLabel.setJustificationType(juce::Justification::centredRight);
   auto dragStatus = [this](const juce::String& message, bool failed) {
@@ -213,7 +213,7 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
     chooserActive = true;
     refreshState();
     fileChooser = std::make_unique<juce::FileChooser>(
-        juce::String::fromUTF8("选择 MIDI 文件"), juce::File{}, "*.mid;*.midi");
+        tr("选择 MIDI 文件"), juce::File{}, "*.mid;*.midi");
     const juce::Component::SafePointer<DuomiSunoAIBridgeAudioProcessorEditor>
         safe(this);
     fileChooser->launchAsync(
@@ -253,7 +253,17 @@ DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
   };
   audioProcessor.getGenerationJob().addChangeListener(this);
   audioProcessor.getMidiExportJob().addChangeListener(this);
-  setSize(640, 844);
+  languageChoice.setName("Language");
+  languageChoice.addItem(juce::String::fromUTF8("简体中文"), 1);
+  languageChoice.addItem("English", 2);
+  languageChoice.onChange = [this] {
+    audioProcessor.setLanguage(duomi::languageFromId(languageChoice.getSelectedId()));
+    applyLanguage();
+    refreshState();
+  };
+  addAndMakeVisible(languageChoice);
+  applyLanguage();
+  setSize(720, 844);
   refreshState();
   // Ensures the last notification racing with worker exit cannot leave controls
   // disabled.
@@ -269,12 +279,14 @@ DuomiSunoAIBridgeAudioProcessorEditor::
 }
 
 void DuomiSunoAIBridgeAudioProcessorEditor::setStatus(const juce::String& msg) {
-  statusLabel.setText(msg.substring(0, 500), juce::dontSendNotification);
-  statusLabel.setTooltip(msg);
+  statusLabel.setText(tr(msg).substring(0, 500), juce::dontSendNotification);
+  statusLabel.setTooltip(tr(msg));
 }
 
 void DuomiSunoAIBridgeAudioProcessorEditor::refreshState() {
+  if (displayedLanguage != audioProcessor.getLanguage()) applyLanguage();
   const bool restoring = audioProcessor.isRestoringSession();
+  languageChoice.setEnabled(!restoring);
   refreshTrackChoice();
   if (inputRevision != audioProcessor.getInputRevision()) {
     inputRevision = audioProcessor.getInputRevision();
@@ -290,10 +302,10 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshState() {
   const auto chordMessage =
       chords.message.isNotEmpty()
           ? chords.message
-          : juce::String::fromUTF8(
+          : tr(
                 "打开或生成 MIDI 后自动另存钢琴柱式和弦，原始 MIDI 保留。");
-  chordStatusLabel.setText(chordMessage, juce::dontSendNotification);
-  chordStatusLabel.setTooltip(chordMessage);
+  chordStatusLabel.setText(tr(chordMessage), juce::dontSendNotification);
+  chordStatusLabel.setTooltip(tr(chordMessage));
   chordStatusLabel.setColour(
       juce::Label::textColourId,
       chords.failed ? juce::Colours::salmon : cyber::muted);
@@ -301,7 +313,7 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshState() {
   chordButton.setEnabled(!restoring && !chords.busy &&
                          audioProcessor.getOriginalMidi() != nullptr);
   previewMode.setEnabled(!restoring);
-  exportButton.setButtonText(juce::String::fromUTF8(
+  exportButton.setButtonText(tr(
       audioProcessor.getPreviewMode() == 3 ? "导出和弦 MIDI" : "导出 MIDI"));
   const auto keyState = audioProcessor.getApiKeyStore().getSnapshot();
   if (forgettingKey && !keyState.busy) {
@@ -319,10 +331,10 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshState() {
   const auto keyMessage =
       keyState.saved && !keyState.busy && !keyState.failed &&
               keyEditor.getText().trim() != keyState.key
-          ? juce::String::fromUTF8("输入已修改，点击保存更新")
+          ? tr("输入已修改，点击保存更新")
           : keyState.message;
-  keyStatusLabel.setText(keyMessage, juce::dontSendNotification);
-  keyStatusLabel.setTooltip(keyMessage);
+  keyStatusLabel.setText(tr(keyMessage), juce::dontSendNotification);
+  keyStatusLabel.setTooltip(tr(keyMessage));
   keyStatusLabel.setColour(
       juce::Label::textColourId,
       keyState.failed ? juce::Colours::salmon : cyber::muted);
@@ -331,15 +343,15 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshState() {
   forgetKeyButton.setEnabled(!keyState.busy &&
                              (keyState.saved || keyState.failed));
   const auto state = audioProcessor.getGenerationJob().getSnapshot();
-  setStatus(restoring ? juce::String::fromUTF8("正在恢复工程预览…")
+  setStatus(restoring ? tr("正在恢复工程预览…")
                       : state.status);
   statusLabel.setColour(juce::Label::textColourId, state.failed
                                                        ? juce::Colours::salmon
                                                        : juce::Colours::white);
   taskLabel.setText(state.taskId.isEmpty()
-                        ? juce::String::fromUTF8(state.midi ? "本地 MIDI 文件"
+                        ? tr(state.midi ? "本地 MIDI 文件"
                                                             : "尚未提交任务")
-                        : juce::String::fromUTF8("任务 ID：") + state.taskId,
+                        : tr("任务 ID：") + state.taskId,
                     juce::dontSendNotification);
   taskLabel.setTooltip("Music: " + state.taskId +
                        "\nMIDI: " + state.midiTaskId);
@@ -366,15 +378,15 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshState() {
   const auto stems = audioProcessor.getAudioStemJob().getSnapshot();
   cancelAudioButton.setEnabled(audio.busy || stems.busy);
   cancelAudioButton.setButtonText(
-      juce::String::fromUTF8(stems.busy ? "取消分轨" : "取消下载"));
+      tr(stems.busy ? "取消分轨" : "取消下载"));
   const auto audioMessage =
       (stems.busy || stems.failed ||
        (!audio.busy && audioProcessor.getAudioTrack() == 0 &&
         stems.message.isNotEmpty()))
           ? stems.message
           : audio.message;
-  audioStatusLabel.setText(audioMessage, juce::dontSendNotification);
-  audioStatusLabel.setTooltip(audioMessage);
+  audioStatusLabel.setText(tr(audioMessage), juce::dontSendNotification);
+  audioStatusLabel.setTooltip(tr(audioMessage));
   audioStatusLabel.setColour(
       juce::Label::textColourId,
       (audio.failed || stems.failed) ? juce::Colours::salmon : cyber::muted);
@@ -387,7 +399,7 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshState() {
   }
   const bool audioMode = audioProcessor.isAudioPreviewSelected();
   showFileButton.setButtonText(
-      juce::String::fromUTF8(audioMode ? "打开音频目录" : "打开 MIDI 目录"));
+      tr(audioMode ? "打开音频目录" : "打开 MIDI 目录"));
   showFileButton.setEnabled(audioMode
                                 ? audio.dragFile != juce::File{}
                                 : audioProcessor.getPreviewMidi() != nullptr);
@@ -408,15 +420,15 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshTrackChoice() {
   bool allowSeparate = false;
   int selected = 1;
   if (mode == 3)
-    names.add(juce::String::fromUTF8("钢琴柱式和弦（固定）"));
+    names.add(tr("钢琴柱式和弦（固定）"));
   else if (mode == 1) {
-    names.add(juce::String::fromUTF8("全部 MIDI 轨道"));
+    names.add(tr("全部 MIDI 轨道"));
     if (original)
       for (const auto& part : original->parts) names.add(part.name);
     selected = audioProcessor.getMidiTrack() + 1;
   } else {
-    names.add(juce::String::fromUTF8("完整混音"));
-    for (const auto& stem : stems.batch.stems) names.add(stem.name);
+    names.add(tr("完整混音"));
+    for (const auto& stem : stems.batch.stems) names.add(tr(stem.name));
     selected = audioProcessor.getAudioTrack() + 1;
     allowSeparate = audioProcessor.getAudioSourceTask().isNotEmpty();
   }
@@ -434,7 +446,7 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshTrackChoice() {
       if (stems.batch.stems.empty() || pending) {
         trackChoice.addSeparator();
         trackChoice.addItem(
-            juce::String::fromUTF8(pending ? "继续查询分轨（不重提）"
+            tr(pending ? "继续查询分轨（不重提）"
                                            : "提取乐器分轨（云端付费）"),
             1000000);
         trackChoice.setItemEnabled(
@@ -449,15 +461,15 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshTrackChoice() {
   }
   if (mode == 2 && !allowSeparate)
     trackChoice.setTooltip(
-        juce::String::fromUTF8("本地混音没有云端歌曲 "
+        tr("本地混音没有云端歌曲 "
                                "ID。先点击「加载成品音频」关联当前生成歌曲，再"
                                "提取乐器分轨；无需重新生成歌曲。"));
   else if (mode == 2)
-    trackChoice.setTooltip(juce::String::fromUTF8(
+    trackChoice.setTooltip(tr(
         "首次云端分离最多 12 轨，基础生成价格的 5 "
         "倍；已完成结果可重复选择、试听和拖出，不重复提交。"));
   else
-    trackChoice.setTooltip(juce::String::fromUTF8(
+    trackChoice.setTooltip(tr(
         mode == 3 ? "柱式和弦是固定的独立钢琴轨。"
                   : "选择 MIDI "
                     "内已有的乐器轨道；试听、钢琴窗、导出与拖拽同步切换。"));
@@ -501,7 +513,7 @@ void DuomiSunoAIBridgeAudioProcessorEditor::refreshPlayback() {
                        : snapshot.state == State::finished ? "已结束"
                                                            : "已停止";
   progressLabel.setText(
-      juce::String::fromUTF8(status) + "  " + time(snapshot.positionSeconds) +
+      tr(status) + "  " + time(snapshot.positionSeconds) +
           " / " +
           time(audioMode ? audio.durationSeconds
                          : (midi ? midi->durationSeconds : 0.0)),
@@ -540,7 +552,8 @@ void DuomiSunoAIBridgeAudioProcessorEditor::paint(juce::Graphics& g) {
 
 void DuomiSunoAIBridgeAudioProcessorEditor::resized() {
   const int w = getWidth() - 32;
-  titleLabel.setBounds(16, 16, w, 28);
+  titleLabel.setBounds(16, 16, w - 150, 28);
+  languageChoice.setBounds(getWidth() - 148, 17, 132, 26);
   keyLabel.setBounds(16, 56, 150, 20);
   keyStatusLabel.setBounds(174, 56, w - 158, 20);
   keyEditor.setBounds(16, 80, w - 208, 30);
@@ -557,8 +570,8 @@ void DuomiSunoAIBridgeAudioProcessorEditor::resized() {
   importButton.setBounds(228, 240, 150, 32);
   midiPreviewLabel.setVisible(false);
   previewMode.setBounds(16, 278, 150, 26);
-  trackChoice.setBounds(176, 278, 264, 26);
-  progressLabel.setBounds(446, 282, w - 430, 20);
+  trackChoice.setBounds(176, 278, w - 348, 26);
+  progressLabel.setBounds(getWidth() - 182, 282, 166, 20);
   pianoRoll.setBounds(16, 352, w, 158);
   audioWaveform.setBounds(pianoRoll.getBounds());
   playButton.setBounds(16, 308, 92, 32);
@@ -582,8 +595,10 @@ void DuomiSunoAIBridgeAudioProcessorEditor::resized() {
 
 void DuomiSunoAIBridgeAudioProcessorEditor::setFileStatus(
     const juce::String& message, bool failed) {
-  fileStatusLabel.setText(message, juce::dontSendNotification);
-  fileStatusLabel.setTooltip(message);
+  fileStatusSource = message;
+  fileStatusFailed = failed;
+  fileStatusLabel.setText(tr(message), juce::dontSendNotification);
+  fileStatusLabel.setTooltip(tr(message));
   fileStatusLabel.setColour(juce::Label::textColourId,
                             failed ? juce::Colours::salmon : cyber::muted);
 }
@@ -597,7 +612,7 @@ void DuomiSunoAIBridgeAudioProcessorEditor::exportMidi() {
   chooserActive = true;
   refreshState();
   fileChooser = std::make_unique<juce::FileChooser>(
-      juce::String::fromUTF8("导出 MIDI"),
+      tr("导出 MIDI"),
       juce::File::getSpecialLocation(juce::File::userDocumentsDirectory)
           .getChildFile(source.getFileName())
           .withFileExtension(".mid"),
@@ -618,4 +633,50 @@ void DuomiSunoAIBridgeAudioProcessorEditor::exportMidi() {
               juce::String::fromUTF8("暂时无法开始导出，请稍后重试。"), true);
         safe->refreshState();
       });
+}
+
+void DuomiSunoAIBridgeAudioProcessorEditor::applyLanguage() {
+  displayedLanguage = audioProcessor.getLanguage();
+  languageChoice.setSelectedId((int)displayedLanguage, juce::dontSendNotification);
+  languageChoice.setTooltip(juce::String::fromUTF8("Language / 简体中文 / English"));
+  keyEditor.setTextToShowWhenEmpty(tr("输入 API Key"), cyber::muted);
+  promptLabel.setText(tr("音乐描述 (prompt)"), juce::dontSendNotification);
+  promptEditor.setTextToShowWhenEmpty(tr("例如：轻快的钢琴，C 大调"), cyber::muted);
+  bpmLabel.setText(tr("BPM · 滚轮/双击"), juce::dontSendNotification);
+  bpmControl.setTooltip(tr("滚轮上下调整 · 双击输入 · 20–300 BPM"));
+  saveKeyButton.setButtonText(tr("保存 Key"));
+  forgetKeyButton.setButtonText(tr("忘记 Key"));
+  saveKeyButton.setTooltip(tr("使用当前 Windows 账户加密保存，下次打开自动读取。"));
+  forgetKeyButton.setTooltip(tr("移除本机保存的 Key；不影响账户或已提交的任务。"));
+  generateMidiButton.setButtonText(tr("生成 MIDI"));
+  generateAudioButton.setButtonText(tr("加载成品音频"));
+  cancelButton.setButtonText(tr("取消等待"));
+  resumeButton.setButtonText(tr("继续查询"));
+  importButton.setButtonText(tr("打开 MIDI"));
+  openAudioButton.setButtonText(tr("打开音频"));
+  logButton.setButtonText(tr("打开诊断日志"));
+  chordButton.setButtonText(tr("重建钢琴柱式和弦"));
+  chordLabel.setText(tr("柱式和弦间隔"), juce::dontSendNotification);
+  chordStep.setTooltip(tr("以当前 BPM 划分间隔；如和弦变化太快或太慢，可修改后重新分析。"));
+  previewMode.changeItemText(1, tr("MIDI 试听"));
+  previewMode.changeItemText(2, tr("成品音频"));
+  previewMode.changeItemText(3, tr("钢琴柱式和弦"));
+  chordStep.changeItemText(1, tr("每 1 拍"));
+  chordStep.changeItemText(2, tr("每 2 拍"));
+  chordStep.changeItemText(4, tr("每 4 拍"));
+  previewMode.setSelectedId(audioProcessor.getPreviewMode(), juce::dontSendNotification);
+  chordStep.setSelectedId(audioProcessor.getChordBeats(), juce::dontSendNotification);
+  playButton.setButtonText(tr("播放"));
+  pauseButton.setButtonText(tr("暂停"));
+  stopButton.setButtonText(tr("停止"));
+  for (auto* button : {&playButton, &pauseButton, &stopButton})
+    button->setTooltip(button->getButtonText());
+  dragHintLabel.setText(tr("按住下方图形拖入 DAW"), juce::dontSendNotification);
+  trackChoice.setName(tr("轨道选择"));
+  trackSignature.clear();
+  lastExportMessage.clear();
+  pianoRoll.setLanguage(displayedLanguage);
+  audioWaveform.setLanguage(displayedLanguage);
+  setFileStatus(fileStatusSource, fileStatusFailed);
+  repaint();
 }

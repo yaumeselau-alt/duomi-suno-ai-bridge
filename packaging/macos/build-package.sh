@@ -64,7 +64,8 @@ for bundle in "${bundles[@]}"; do
 done
 docs="$payload/Library/Application Support/Duomi Suno AI Bridge"
 mkdir -p "$docs/licenses"
-cp "$root/packaging/INSTALL.txt" "$root/packaging/THIRD_PARTY_NOTICES.txt" "$docs/"
+cp "$root/packaging/INSTALL.txt" "$root/packaging/INSTALL.en.txt" \
+  "$root/packaging/THIRD_PARTY_NOTICES.txt" "$root/packaging/THIRD_PARTY_NOTICES.zh-CN.txt" "$docs/"
 cp "$root/packaging/macos/configure-ffmpeg.sh" "$docs/"
 cp "$root/lib/JUCE/LICENSE.md" "$docs/licenses/JUCE-LICENSE.md"
 cp "$root/lib/JUCE/JUCE.spdx.json" "$docs/licenses/"

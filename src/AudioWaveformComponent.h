@@ -4,6 +4,7 @@
 #include "AudioPreviewPlayer.h"
 #include "FileDragComponent.h"
 #include "MusicalGrid.h"
+#include "Localisation.h"
 
 class AudioWaveformComponent final : public FileDragComponent {
  public:
@@ -11,7 +12,7 @@ class AudioWaveformComponent final : public FileDragComponent {
       Starter starter =
           juce::DragAndDropContainer::performExternalDragDropOfFiles)
       : FileDragComponent(std::move(starter)) {
-    setName(juce::String::fromUTF8("音频波形进度条"));
+    setName(tr("音频波形进度条"));
   }
   std::function<void(double)> onSeek;
   void setPreview(const duomi::AudioPreviewPlayer::Snapshot& value) {
@@ -30,12 +31,17 @@ class AudioWaveformComponent final : public FileDragComponent {
       repaint();
     }
   }
+  void setLanguage(duomi::Language value) {
+    language = value;
+    setName(tr("音频波形进度条"));
+    repaint();
+  }
   void paint(juce::Graphics& g) override {
     g.fillAll(juce::Colour(0xff110c1b));
     if (!waveform || waveform->peaks.empty()) {
       g.setColour(juce::Colour(0xffc8b4df));
       g.drawFittedText(
-          juce::String::fromUTF8(loading ? "正在加载音频波形…"
+          tr(loading ? "正在加载音频波形…"
                                          : "加载成品音频或打开音频后显示波形"),
           getLocalBounds().reduced(12), juce::Justification::centred, 2);
       return;
@@ -49,9 +55,9 @@ class AudioWaveformComponent final : public FileDragComponent {
     const float cursor = area.getX() + fraction * area.getWidth();
     g.setFont(12.0f);
     g.setColour(juce::Colour(0xffc8b4df));
-    g.drawText(juce::String::fromUTF8("成品音频 · 小节/拍 4/4 · ") +
+    g.drawText(tr("成品音频 · 小节/拍 4/4 · ") +
                    juce::String(bpm) +
-                   juce::String::fromUTF8(" BPM · 单击定位 / 按住拖出"),
+                   tr(" BPM · 单击定位 / 按住拖出"),
                12, 8, getWidth() - 24, 18, juce::Justification::centredLeft);
     for (const auto& tick :
          MusicalGrid::ticks(0, duration, bpm, area.getWidth())) {
@@ -121,6 +127,8 @@ class AudioWaveformComponent final : public FileDragComponent {
   }
 
  private:
+  duomi::Language language = duomi::Language::simplifiedChinese;
+  juce::String tr(const char* value) const { return duomi::translate(value, language); }
   int bpm = 120;
   std::shared_ptr<const duomi::AudioPreviewPlayer::Waveform> waveform;
   std::shared_ptr<const duomi::AudioPreviewPlayer::Waveform> clickedWaveform;

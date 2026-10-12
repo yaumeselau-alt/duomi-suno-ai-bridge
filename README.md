@@ -1,6 +1,14 @@
-# Duomi Suno AI Bridge
+# Duomi Suno AI Bridge — 简体中文
+
+**简体中文** | [English](README.en.md)
 
 在 Ableton Live 等 DAW 内生成音乐、提取 MIDI、试听并拖出 MIDI/WAV 的 JUCE 插件。
+
+## 界面语言（0.0.3）
+
+右上角可选择 **简体中文 / English**，切换立即生效。语言随宿主工程或独立程序状态保存，重开窗口保留；旧工程默认中文，各实例互不影响。音乐描述、文件名、MIDI/音频内容不被翻译或修改。原生文件窗口的系统按钮遵从操作系统语言，服务端返回的原始错误保留原文。
+
+完整英文文档入口：[README.en.md](README.en.md)。各专题文档顶部均可切换中英文。
 
 ## 功能
 
@@ -29,6 +37,8 @@ Mac：安装完整 Xcode 和 CMake 3.22+，然后：
 目标 macOS 11+ Universal（Apple Silicon + Intel），包含 VST3、AU 和独立程序。
 
 ## GitHub 自动构建 Mac 安装包
+
+下面是 **0.0.2 历史安装包，不含新增语言选择**；0.0.3 请使用本次源码构建对应的产物。
 
 2026-10-12 已生成首个 Universal 测试安装包（VST3 / AU / 独立程序）：
 [成功构建与下载](https://github.com/yaumeselau-alt/duomi-suno-ai-bridge/actions/runs/38207700838) → Artifacts → **Duomi-Suno-AI-Bridge-macOS-Universal**。

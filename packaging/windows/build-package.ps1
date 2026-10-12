@@ -38,7 +38,7 @@ $dist = Join-Path $root 'dist'
 New-Item -ItemType Directory -Force -Path $stage,$dist,(Join-Path $stage 'Standalone'),(Join-Path $stage 'VST3'),(Join-Path $stage 'licenses') | Out-Null
 Copy-Item -LiteralPath (Join-Path $artifacts 'Standalone/Duomi Suno AI Bridge.exe') -Destination (Join-Path $stage 'Standalone')
 Copy-Item -LiteralPath (Join-Path $artifacts 'VST3/Duomi Suno AI Bridge.vst3') -Destination (Join-Path $stage 'VST3') -Recurse
-Copy-Item -LiteralPath (Join-Path $root 'packaging/INSTALL.txt'),(Join-Path $root 'packaging/THIRD_PARTY_NOTICES.txt'),(Join-Path $PSScriptRoot 'Configure-FFmpeg.ps1'),(Join-Path $PSScriptRoot 'Configure-FFmpeg.cmd') -Destination $stage
+Copy-Item -LiteralPath (Join-Path $root 'packaging/INSTALL.txt'),(Join-Path $root 'packaging/INSTALL.en.txt'),(Join-Path $root 'packaging/THIRD_PARTY_NOTICES.zh-CN.txt'),(Join-Path $root 'packaging/THIRD_PARTY_NOTICES.txt'),(Join-Path $PSScriptRoot 'Configure-FFmpeg.ps1'),(Join-Path $PSScriptRoot 'Configure-FFmpeg.cmd') -Destination $stage
 Copy-Item -LiteralPath (Join-Path $root 'lib/JUCE/LICENSE.md') -Destination (Join-Path $stage 'licenses/JUCE-LICENSE.md')
 Copy-Item -LiteralPath (Join-Path $root 'lib/JUCE/JUCE.spdx.json') -Destination (Join-Path $stage 'licenses')
 Copy-Item -LiteralPath (Join-Path $root 'lib/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK/LICENSE.txt') -Destination (Join-Path $stage 'licenses/VST3-LICENSE.txt')

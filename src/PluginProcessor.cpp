@@ -177,6 +177,7 @@ void DuomiSunoAIBridgeAudioProcessor::getStateInformation(
     saved.prompt = description;
     saved.audioFile = restoredAudioReference;
   }
+  saved.language = (int)getLanguage();
   saved.bpm = getGenerationBpm();
   saved.chordBeats = getChordBeats();
   saved.mode = getPreviewMode();
@@ -380,6 +381,7 @@ void DuomiSunoAIBridgeAudioProcessor::refreshBackgroundState() {
         std::lock_guard<std::mutex> lock(sessionMutex);
         restoredAudioReference = saved.audioFile;
       }
+      setLanguage(duomi::languageFromId(saved.language));
       setGenerationBpm(saved.bpm);
       setChordBeats(saved.chordBeats);
       chordJob.clear();

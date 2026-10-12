@@ -52,6 +52,7 @@ jobs:
             dist/*macOS-Universal-UNSIGNED.pkg
             dist/*macOS-Universal-UNSIGNED.pkg.sha256
             packaging/INSTALL.txt
+            packaging/INSTALL.en.txt
           if-no-files-found: error
           retention-days: 14
       - name: Upload build diagnostics

@@ -4,6 +4,7 @@
 #include "DuomiClient.h"
 #include "FileDragComponent.h"
 #include "MusicalGrid.h"
+#include "Localisation.h"
 
 class PianoRollComponent final : public FileDragComponent {
  public:
@@ -11,7 +12,7 @@ class PianoRollComponent final : public FileDragComponent {
       Starter starter =
           juce::DragAndDropContainer::performExternalDragDropOfFiles)
       : FileDragComponent(std::move(starter)) {
-    setName(juce::String::fromUTF8("钢琴卷帘，按住拖出 MIDI"));
+    setName(tr("钢琴卷帘，按住拖出 MIDI"));
   }
   void setMidi(std::shared_ptr<const duomi::GeneratedMidi> value) {
     if (value == midi) return;
@@ -49,11 +50,16 @@ class PianoRollComponent final : public FileDragComponent {
       repaint();
     }
   }
+  void setLanguage(duomi::Language value) {
+    language = value;
+    setName(tr("钢琴卷帘，按住拖出 MIDI"));
+    repaint();
+  }
   void paint(juce::Graphics& g) override {
     g.fillAll(juce::Colour(0xff110c1b));
     if (notes.empty()) {
       g.setColour(juce::Colour(0xffc8b4df));
-      g.drawFittedText(juce::String::fromUTF8("生成或打开 MIDI 后即可试听"),
+      g.drawFittedText(tr("生成或打开 MIDI 后即可试听"),
                        getLocalBounds().reduced(12),
                        juce::Justification::centred, 2);
       return;
@@ -64,7 +70,7 @@ class PianoRollComponent final : public FileDragComponent {
     g.setFont(12.0f);
     g.drawText(midi->file.getFileName() + "  |  " +
                    juce::String(midi->noteCount) +
-                   juce::String::fromUTF8(" 个音符 · 小节/拍 4/4 · ") +
+                   tr(" 个音符 · 小节/拍 4/4 · ") +
                    juce::String(bpm) + " BPM",
                caption, juce::Justification::centredLeft);
     const double start = MusicalGrid::pageStart(
@@ -114,6 +120,8 @@ class PianoRollComponent final : public FileDragComponent {
   }
 
  private:
+  duomi::Language language = duomi::Language::simplifiedChinese;
+  juce::String tr(const char* value) const { return duomi::translate(value, language); }
   int bpm = 120;
   struct Note {
     double start, end;

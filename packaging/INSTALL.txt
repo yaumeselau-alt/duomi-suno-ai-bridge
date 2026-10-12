@@ -1,4 +1,11 @@
-Duomi Suno AI Bridge 0.0.2 — 安装与使用
+Duomi Suno AI Bridge 0.0.3 — 安装与使用
+
+简体中文；English: INSTALL.en.txt
+
+界面语言
+窗口右上角可切换“简体中文 / English”，立即更新界面文字。
+语言随工程或独立程序状态保存，旧工程默认中文；音乐描述及文件名不变。
+0.0.2 历史安装包不含语言选择，请使用 0.0.3。
 
 Windows 安装包
 1. 保存工程并关闭 Live、其他 DAW 和本程序。

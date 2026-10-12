@@ -19,6 +19,7 @@
 #include "MidiPreviewPlayer.h"
 #include "MidiTrackJob.h"
 #include "SessionState.h"
+#include "Localisation.h"
 
 //==============================================================================
 /**
@@ -101,6 +102,11 @@ class DuomiSunoAIBridgeAudioProcessor : public juce::AudioProcessor,
   duomi::AudioPreviewPlayer& getAudioPreviewPlayer() {
     return audioTrack.load() > 0 ? stemPreviewPlayer : audioPreviewPlayer;
   }
+  duomi::Language getLanguage() const { return duomi::languageFromId(language.load()); }
+  void setLanguage(duomi::Language value) {
+    const int next = (int)duomi::languageFromId((int)value);
+    if (language.exchange(next) != next) markSessionChanged();
+  }
   int getGenerationBpm() const { return generationBpm.load(); }
   void setGenerationBpm(int bpm) {
     const int next = juce::jlimit(20, 300, bpm);
@@ -141,6 +147,7 @@ class DuomiSunoAIBridgeAudioProcessor : public juce::AudioProcessor,
   bool pendingAudioContext = false;
   juce::String pendingAudioSource, pendingAudioTask;
   std::atomic<int> generationBpm{120};
+  std::atomic<int> language{1};
   duomi::ChordExtractionJob chordJob;
   std::atomic<int> previewMode{1}, chordBeats{2}, inputRevision{0};
   std::atomic<bool> restoring{false};

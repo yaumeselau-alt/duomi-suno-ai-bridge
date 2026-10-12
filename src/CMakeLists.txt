@@ -108,7 +108,7 @@ juce_generate_juce_header(DuomiSunoAIBridge)
 
 option(DUOMI_BUILD_TESTS "Build offline client checks and explicit live API probe" OFF)
 if(DUOMI_BUILD_TESTS)
-    add_executable(DuomiBridgeCheck ../tests/DuomiClientTests.cpp ../tests/MidiPreviewTests.cpp ../tests/MidiTransferTests.cpp ../tests/AudioPreviewTests.cpp ../tests/ApiKeyStoreTests.cpp ../tests/ChordStateTests.cpp ../tests/TrackSelectionTests.cpp)
+    add_executable(DuomiBridgeCheck ../tests/DuomiClientTests.cpp ../tests/MidiPreviewTests.cpp ../tests/MidiTransferTests.cpp ../tests/AudioPreviewTests.cpp ../tests/ApiKeyStoreTests.cpp ../tests/ChordStateTests.cpp ../tests/TrackSelectionTests.cpp ../tests/LocalisationTests.cpp)
     target_link_libraries(DuomiBridgeCheck PRIVATE DuomiSunoAIBridge)
     target_include_directories(DuomiBridgeCheck PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
     target_include_directories(DuomiBridgeCheck PRIVATE
@@ -123,6 +123,7 @@ if(DUOMI_BUILD_TESTS)
     add_test(NAME ApiKeyStoreOffline COMMAND DuomiBridgeCheck --key-tests)
     add_test(NAME ChordExtractionOffline COMMAND DuomiBridgeCheck --chord-tests)
     add_test(NAME SessionStateOffline COMMAND DuomiBridgeCheck --session-tests)
+    add_test(NAME LocalisationOffline COMMAND DuomiBridgeCheck --language-tests)
     add_test(NAME TrackSelectionOffline COMMAND DuomiBridgeCheck --track-tests)
 endif()
 

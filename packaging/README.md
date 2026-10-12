@@ -1,6 +1,10 @@
-# 安装包构建
+# 安装包构建 — 简体中文
 
-Windows 产物：dist/Duomi-Suno-AI-Bridge-0.0.2-Windows-x64-Setup.exe。
+**简体中文** | [English](README.en.md)
+
+当前源版本为 **0.0.3**，新增语言选择；下方 0.0.2 安装包与校验值为历史交付记录。0.0.3 构建产物按新版本命名，不能用旧包验收双语功能。英文安装说明 INSTALL.en.txt 与中文说明一同随包提供。
+
+Windows 历史产物：dist/Duomi-Suno-AI-Bridge-0.0.2-Windows-x64-Setup.exe。
 
 Mac 安装包：dist/Duomi-Suno-AI-Bridge-0.0.2-macOS-Universal-UNSIGNED.pkg（约 32.6 MB，未公证的 Universal 测试包）。已在 GitHub macOS runner 编译、测试并生成。
 

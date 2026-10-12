@@ -850,6 +850,7 @@ int stemShowcase();
 int stemLiveProbe(const juce::String&);
 int runChordTests();
 int runSessionTests();
+int runLocalisationTests();
 int chordProbe(const juce::File&, const juce::File&);
 int runApiKeyStoreTests();
 int runAudioPreviewTests();
@@ -870,6 +871,8 @@ int main(int argc, char** argv) {
       return stemLiveProbe(argv[2]);
     if (argc == 2 && juce::String(argv[1]) == "--chord-tests")
       return runChordTests();
+    if (argc == 2 && juce::String(argv[1]) == "--language-tests")
+      return runLocalisationTests();
     if (argc == 2 && juce::String(argv[1]) == "--session-tests")
       return runSessionTests();
     if (argc == 4 && juce::String(argv[1]) == "--extract-chords")

@@ -1,0 +1,61 @@
+Duomi Suno AI Bridge 0.0.3 — Installation and use (English)
+简体中文: INSTALL.txt
+
+Windows
+1. Save your project and close Live, other DAWs and this application.
+2. Run Duomi-Suno-AI-Bridge-0.0.3-Windows-x64-Setup.exe.
+3. Default VST3 location:
+   C:\Program Files\Common Files\VST3\Duomi Suno AI Bridge.vst3
+4. In Live: Settings > Plug-Ins > enable the VST3 system folder and rescan.
+5. Find Duomi Suno AI Bridge and load it onto a MIDI track.
+6. Select English or 简体中文 at the top right. Language is saved with the project
+   or standalone state; reopening the editor retains it. Old projects default
+   to Chinese. Prompts and filenames are not translated.
+7. Enter your own Duomi API key. Local MIDI/audio playback does not require a key.
+8. Windows Settings > Installed apps can uninstall the program. Media, task caches
+   and saved keys are retained. Use Forget key first if you want to remove the key.
+
+Windows requirements
+Windows 10/11 x64. Release builds use the static MSVC runtime.
+The installer is unsigned; the publisher may appear as Unknown. This is a test build.
+
+Extra decoder for instrument stems
+Some cloud stems use M4A/Opus and need a separately installed FFmpeg supporting
+that format. FFmpeg is not bundled. Choose a trusted build via:
+https://ffmpeg.org/download.html
+Start menu > Duomi Suno AI Bridge > Configure FFmpeg for stem audio.
+Choose the local ffmpeg.exe using a normal user account.
+Without it, MIDI and ordinary MP3/WAV still work; M4A reports a missing decoder.
+FFmpeg receives local temporary audio files, not your API key.
+Selecting a stem for the first time downloads it. Installing the program cannot
+resolve cloud queue delays or terminal server timeouts.
+
+macOS
+Use the macOS-Universal-UNSIGNED.pkg built from version 0.0.3 for the language
+selector. The earlier 0.0.2 package does not include this feature.
+Target: macOS 11+, Intel x86_64 and Apple Silicon arm64.
+Save your project and close DAWs before opening the pkg.
+It installs:
+  /Library/Audio/Plug-Ins/VST3/Duomi Suno AI Bridge.vst3
+  /Library/Audio/Plug-Ins/Components/Duomi Suno AI Bridge.component
+  /Applications/Duomi Suno AI Bridge.app
+Enable Live's VST3 system folder and rescan. Choose the language at the top right.
+Compilation/tests/architecture checks do not replace Mac installation and
+Live/AU playback/drag validation, which remain outstanding.
+API-key persistence is not implemented on Mac: enter your key each session.
+Configure a separately installed FFmpeg:
+  bash packaging/macos/configure-ffmpeg.sh /absolute/path/to/ffmpeg
+The script neither installs FFmpeg nor changes system security settings.
+UNSIGNED packages have no Developer ID signature or Apple notarization and may
+be blocked by macOS. See README.en.md for signing and notarization.
+
+Mac-Source.zip contains source and build materials, not installable binaries.
+On a Mac with full Xcode and CMake 3.22+, extract it and run:
+  bash packaging/macos/build-package.sh
+
+Privacy and charges
+Packages contain no API keys, personal projects, generated music, caches or logs.
+Cloud generation, MIDI extraction and separation use the supplied account and
+the provider's pricing. Stopping local waiting does not cancel a cloud task or
+refund charges. Avoid repeated submissions.
+

@@ -1,4 +1,14 @@
-# Changelog 
+# Changelog — English
+
+[简体中文](CHANGELOG.zh-CN.md) | **English**
+
+## 0.0.3 — 2026-10-12
+
+- Added a per-instance Simplified Chinese / English selector with immediate UI updates.
+- Persisted language in host/standalone state, retaining Chinese defaults for older projects.
+- Localized controls, menus, status messages and preview captions without rewriting user content.
+- Added independent English documentation and language navigation across project guides.
+- Added localization integration checks for switching, reopen, state compatibility and isolation.
 
 ## 2026-10-12
 

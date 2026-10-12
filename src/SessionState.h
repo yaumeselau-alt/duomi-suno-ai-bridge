@@ -3,6 +3,7 @@
 namespace duomi {
 struct SessionState {
   int bpm = 120, chordBeats = 2, mode = 1;
+  int language = 1;
   int midiTrack = 0, audioTrack = 0;
   juce::String audioSourceTask;
   StemBatch stemBatch;
@@ -16,6 +17,7 @@ struct SessionState {
     obj->setProperty("bpm", bpm);
     obj->setProperty("chordBeats", chordBeats);
     obj->setProperty("mode", mode);
+    obj->setProperty("language", language);
     obj->setProperty("prompt", prompt);
     obj->setProperty("taskId", taskId);
     obj->setProperty("midiTaskId", midiTaskId);
@@ -63,6 +65,11 @@ struct SessionState {
                             "midiName", "audioFile", "midi"})
       if (!value[key].isString()) return false;
     SessionState result;
+    if (value.hasProperty("language")) {
+      if (!value["language"].isInt()) return false;
+      result.language = (int)value["language"];
+      if (result.language != 1 && result.language != 2) return false;
+    }
     result.bpm = (int)value["bpm"];
     result.chordBeats = (int)value["chordBeats"];
     result.mode = (int)value["mode"];

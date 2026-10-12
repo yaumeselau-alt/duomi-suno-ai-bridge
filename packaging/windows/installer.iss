@@ -5,7 +5,7 @@
   #error OutputDir is required
 #endif
 #ifndef AppVersion
-  #define AppVersion "0.0.2"
+  #define AppVersion "0.0.3"
 #endif
 [Setup]
 AppId={{2CF28632-0B53-4C47-A897-FCC64D1E6048}
@@ -43,6 +43,8 @@ Name: "standalone"; Description: "Standalone application"; Types: full
 Source: "{#StageDir}\Standalone\Duomi Suno AI Bridge.exe"; DestDir: "{app}"; Components: standalone; Flags: ignoreversion
 Source: "{#StageDir}\VST3\Duomi Suno AI Bridge.vst3\*"; DestDir: "{code:GetVst3Dir}\Duomi Suno AI Bridge.vst3"; Components: vst3; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#StageDir}\INSTALL.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#StageDir}\INSTALL.en.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#StageDir}\THIRD_PARTY_NOTICES.zh-CN.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#StageDir}\THIRD_PARTY_NOTICES.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#StageDir}\Configure-FFmpeg.ps1"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#StageDir}\Configure-FFmpeg.cmd"; DestDir: "{app}"; Flags: ignoreversion
@@ -50,7 +52,8 @@ Source: "{#StageDir}\licenses\*"; DestDir: "{app}\licenses"; Flags: ignoreversio
 
 [Icons]
 Name: "{group}\Duomi Suno AI Bridge"; Filename: "{app}\Duomi Suno AI Bridge.exe"; Components: standalone
-Name: "{group}\Installation guide"; Filename: "{app}\INSTALL.txt"
+Name: "{group}\Installation guide (English)"; Filename: "{app}\INSTALL.en.txt"
+Name: "{group}\Installation guide (Chinese)"; Filename: "{app}\INSTALL.txt"
 Name: "{group}\Configure FFmpeg for stem audio"; Filename: "{app}\Configure-FFmpeg.cmd"
 Name: "{group}\Uninstall"; Filename: "{uninstallexe}"
 
