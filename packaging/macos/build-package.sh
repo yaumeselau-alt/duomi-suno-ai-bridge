@@ -19,15 +19,21 @@ work="$(mktemp -d "$root/build/macos-package.XXXXXX")"
 build="$work/build"
 payload="$work/payload"
 app="Duomi Suno AI Bridge"
-cmake -S "$root" -B "$build" -G Xcode \
-  '-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64' \
-  -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DDUOMI_BUILD_TESTS=ON \
-  -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
-cmake --build "$build" --config Release --parallel 2
-ctest --test-dir "$build" -C Release --output-on-failure --timeout 120
-artifacts="$build/src/DuomiSunoAIBridge_artefacts/Release"
-# Preserve tested bundles if a later packaging step fails.
-tar -C "$artifacts" -czf "$root/build/macos-built-products.tar.gz" VST3 AU Standalone
+if [[ -n "${DUOMI_PREBUILT_DIR:-}" ]]; then
+  # Only for packaging recovery of independently verified, tested build products.
+  artifacts="$(cd "$DUOMI_PREBUILT_DIR" && pwd)"
+  echo "Repackaging existing tested bundles: $artifacts"
+else
+  cmake -S "$root" -B "$build" -G Xcode \
+    '-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64' \
+    -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DDUOMI_BUILD_TESTS=ON \
+    -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+  cmake --build "$build" --config Release --parallel 2
+  ctest --test-dir "$build" -C Release --output-on-failure --timeout 120
+  artifacts="$build/src/DuomiSunoAIBridge_artefacts/Release"
+  # Preserve tested bundles if a later packaging step fails.
+  tar -C "$artifacts" -czf "$root/build/macos-built-products.tar.gz" VST3 AU Standalone
+fi
 mkdir -p "$payload/Library/Audio/Plug-Ins/VST3" \
   "$payload/Library/Audio/Plug-Ins/Components" "$payload/Applications"
 ditto "$artifacts/VST3/$app.vst3" "$payload/Library/Audio/Plug-Ins/VST3/$app.vst3"
@@ -48,6 +54,7 @@ bundles=("$payload/Library/Audio/Plug-Ins/VST3/$app.vst3"
 for bundle in "${bundles[@]}"; do
   executable=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$bundle/Contents/Info.plist")
   lipo "$bundle/Contents/MacOS/$executable" -verify_arch arm64 x86_64
+  lipo "$bundle/Contents/MacOS/$executable" -archs
   if [[ -n "$identity" ]]; then
     codesign --force --options runtime --timestamp --sign "$identity" "$bundle"
   else
@@ -66,7 +73,11 @@ cp "$root/lib/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK/
 pkgbuild --analyze --root "$payload" "$work/components.plist"
 index=0
 while /usr/libexec/PlistBuddy -c "Print :$index" "$work/components.plist" >/dev/null 2>&1; do
-  /usr/libexec/PlistBuddy -c "Set :$index:BundleIsRelocatable false" "$work/components.plist"
+  if /usr/libexec/PlistBuddy -c "Print :$index:BundleIsRelocatable" "$work/components.plist" >/dev/null 2>&1; then
+    /usr/libexec/PlistBuddy -c "Set :$index:BundleIsRelocatable false" "$work/components.plist"
+  else
+    /usr/libexec/PlistBuddy -c "Add :$index:BundleIsRelocatable bool false" "$work/components.plist"
+  fi
   index=$((index + 1))
 done
 pkgbuild --root "$payload" --component-plist "$work/components.plist" \
@@ -87,6 +98,10 @@ if [[ -n "$profile" ]]; then
   xcrun stapler validate "$output"
   spctl --assess --type install --verbose=2 "$output"
 fi
-shasum -a 256 "$output" > "$output.sha256"
+# Confirm the final archive can be expanded and contains the component package.
+pkgutil --expand "$output" "$work/expanded"
+test -f "$work/expanded/Distribution"
+test -d "$work/expanded/component.pkg"
+(cd "$root/dist" && shasum -a 256 "$(basename "$output")" > "$(basename "$output").sha256")
 echo "Created: $output"
 echo "Verify installation and playback/dragging in Live and AU hosts on a Mac."
