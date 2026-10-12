@@ -36,7 +36,7 @@ Mac-Source.zip 是源代码与打包材料，不是可安装的 Mac 二进制。
   /Library/Audio/Plug-Ins/Components/Duomi Suno AI Bridge.component
   /Applications/Duomi Suno AI Bridge.app
 生成前会编译、运行测试并核查两个架构。
-当前仅准备脚本，尚未在 Mac 编译或验证 Live/AU。
+自动构建检查编译、离线测试和双架构；Live/AU 实际试听及拖拽仍需 Mac 实机验收。
 Mac 的 Key 加密保存尚未实现：每次打开插件需手动输入。
 M4A 分轨依赖本机 FFmpeg，可配置：
   bash packaging/macos/configure-ffmpeg.sh /完整路径/ffmpeg

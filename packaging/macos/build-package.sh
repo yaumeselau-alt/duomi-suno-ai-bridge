@@ -24,8 +24,10 @@ cmake -S "$root" -B "$build" -G Xcode \
   -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DDUOMI_BUILD_TESTS=ON \
   -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
 cmake --build "$build" --config Release --parallel 2
-ctest --test-dir "$build" -C Release --output-on-failure
+ctest --test-dir "$build" -C Release --output-on-failure --timeout 120
 artifacts="$build/src/DuomiSunoAIBridge_artefacts/Release"
+# Preserve tested bundles if a later packaging step fails.
+tar -C "$artifacts" -czf "$root/build/macos-built-products.tar.gz" VST3 AU Standalone
 mkdir -p "$payload/Library/Audio/Plug-Ins/VST3" \
   "$payload/Library/Audio/Plug-Ins/Components" "$payload/Applications"
 ditto "$artifacts/VST3/$app.vst3" "$payload/Library/Audio/Plug-Ins/VST3/$app.vst3"
@@ -45,7 +47,7 @@ bundles=("$payload/Library/Audio/Plug-Ins/VST3/$app.vst3"
          "$payload/Applications/$app.app")
 for bundle in "${bundles[@]}"; do
   executable=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$bundle/Contents/Info.plist")
-  lipo -verify_arch arm64 x86_64 "$bundle/Contents/MacOS/$executable"
+  lipo "$bundle/Contents/MacOS/$executable" -verify_arch arm64 x86_64
   if [[ -n "$identity" ]]; then
     codesign --force --options runtime --timestamp --sign "$identity" "$bundle"
   else
