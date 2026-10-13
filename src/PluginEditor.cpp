@@ -1,9 +1,16 @@
 #include "PluginEditor.h"
+#include <BinaryData.h>
 
 DuomiSunoAIBridgeAudioProcessorEditor::DuomiSunoAIBridgeAudioProcessorEditor(
     DuomiSunoAIBridgeAudioProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p) {
   setLookAndFeel(&theme);
+  brandLogo.setImage(juce::ImageCache::getFromMemory(
+      BinaryData::duomilogo_png, BinaryData::duomilogo_pngSize),
+      juce::RectanglePlacement::centred);
+  brandLogo.setName("Duomi Suno AI Bridge");
+  brandLogo.setInterceptsMouseClicks(false, false);
+  addAndMakeVisible(brandLogo);
   titleLabel.setText("Duomi Suno AI Bridge", juce::dontSendNotification);
   titleLabel.setFont(juce::Font(juce::FontOptions(20.0f, juce::Font::bold)));
   addAndMakeVisible(titleLabel);
@@ -552,7 +559,8 @@ void DuomiSunoAIBridgeAudioProcessorEditor::paint(juce::Graphics& g) {
 
 void DuomiSunoAIBridgeAudioProcessorEditor::resized() {
   const int w = getWidth() - 32;
-  titleLabel.setBounds(16, 16, w - 150, 28);
+  brandLogo.setBounds(16, 12, 34, 34);
+  titleLabel.setBounds(58, 16, w - 192, 28);
   languageChoice.setBounds(getWidth() - 148, 17, 132, 26);
   keyLabel.setBounds(16, 56, 150, 20);
   keyStatusLabel.setBounds(174, 56, w - 158, 20);

@@ -11,9 +11,9 @@ else()
 endif()
 
 juce_add_plugin(DuomiSunoAIBridge
+    ICON_BIG "${CMAKE_SOURCE_DIR}/assets/duomi-logo.png"
+    ICON_SMALL "${CMAKE_SOURCE_DIR}/assets/duomi-logo.png"
     # VERSION ...                                     # Set this if the plugin version is different to the project version
-    # ICON_BIG ""   # ICON_* arguments specify a path to an image file to use as an icon for the Standalone
-    #   ICON_SMALL "${CMAKE_SOURCE_DIR}/Assets/icon16.png "
     COMPANY_NAME "MrDream"                          # Specify the name of the plugin's author
     COMPANY_COPYRIGHT "MrDream"
     COMPANY_WEBSITE "https://example.com/"
@@ -68,6 +68,7 @@ target_compile_definitions(DuomiSunoAIBridge
 juce_add_binary_data(JuceLogoBinary
 SOURCES
 ${CMAKE_SOURCE_DIR}/assets/juce-logo.svg
+${CMAKE_SOURCE_DIR}/assets/duomi-logo.png
 )
 
 target_sources(DuomiSunoAIBridge PRIVATE

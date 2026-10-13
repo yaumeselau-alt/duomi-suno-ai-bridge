@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 PROJECT(DuomiSunoAIBridge
     LANGUAGES C CXX
-    VERSION 0.0.3
+    VERSION 0.0.4
 )
 
 # for clang-tidy(this enable to find system header files).

@@ -2,6 +2,12 @@
 
 [简体中文](CHANGELOG.zh-CN.md) | **English**
 
+## 0.0.4 — 2026-10-13
+
+- Added the purple D/audio-bar logo to app icons and editor header.
+- Branded Windows Setup, uninstall entries and wizard; added a Mac installer welcome page.
+- Included reusable PNG/ICO assets and bilingual brand documentation.
+
 ## 0.0.3 — 2026-10-12
 
 - Added a per-instance Simplified Chinese / English selector with immediate UI updates.

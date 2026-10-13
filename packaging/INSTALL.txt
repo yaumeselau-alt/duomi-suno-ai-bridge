@@ -1,4 +1,4 @@
-Duomi Suno AI Bridge 0.0.3 — 安装与使用
+Duomi Suno AI Bridge 0.0.4 — 安装与使用
 
 简体中文；English: INSTALL.en.txt
 

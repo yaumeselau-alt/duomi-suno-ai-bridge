@@ -5,9 +5,9 @@
 Version 0.0.3 adds the in-app language selector. Deliverables use the version
 from CMakeLists.txt:
 
-- Windows: dist/Duomi-Suno-AI-Bridge-0.0.3-Windows-x64-Setup.exe
-- Mac: dist/Duomi-Suno-AI-Bridge-0.0.3-macOS-Universal-UNSIGNED.pkg
-- Source kit: dist/Duomi-Suno-AI-Bridge-0.0.3-Mac-Source.zip
+- Windows: dist/Duomi-Suno-AI-Bridge-0.0.4-Windows-x64-Setup.exe
+- Mac: dist/Duomi-Suno-AI-Bridge-0.0.4-macOS-Universal-UNSIGNED.pkg
+- Source kit: dist/Duomi-Suno-AI-Bridge-0.0.4-Mac-Source.zip
 
 The source ZIP is not an installer. It contains project code, tests, JUCE sources
 and build materials, with no private keys, projects, generated audio or logs.
@@ -131,3 +131,7 @@ compilation/tests. Use the normal workflow for new source.
 References: [Inno Setup verification](https://jrsoftware.org/isdl-verify.php),
 [Apple packaging](https://developer.apple.com/documentation/xcode/packaging-mac-software-for-distribution).
 
+
+## 0.0.4 branding (2026-10-13)
+
+The master is assets/duomi-logo.png. JUCE generates native Windows/Mac icons. Windows Setup, uninstallation entries and the wizard use the logo; the uninstall icon works even without the standalone component. Mac uses the application icon and a branded HTML installer welcome page. Finder controls the pkg file icon. The current build version is 0.0.4.

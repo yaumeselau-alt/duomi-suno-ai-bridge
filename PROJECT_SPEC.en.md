@@ -7,7 +7,7 @@ account information and personal generated audio are excluded.
 
 ## Implemented
 
-- JUCE 9.0.3 C++17 instrument plugin, version 0.0.3, VST3 and standalone;
+- JUCE 9.0.3 C++17 instrument plugin, version 0.0.4, VST3 and standalone;
   AU is configured for macOS.
 - Duomi music generation, asynchronous MIDI extraction and resumable task queries.
 - Piano roll, audio waveform, playback controls and drag-to-DAW MIDI/WAV export.
@@ -21,7 +21,7 @@ account information and personal generated audio are excluded.
 
 ## Validation
 
-Windows 0.0.3 Release: 10 CTest entries pass, including actual VST3 factory, MIDI input
+Windows 0.0.4 Release: 10 CTest entries pass, including actual VST3 factory, MIDI input
 bus, stereo audio processing and state round-trip checks. The earlier 0.0.2 Windows installer
 passed isolated installation, custom-folder upgrade and uninstallation checks.
 Earlier Windows Live playback/dragging was accepted by the project owner.
@@ -69,3 +69,7 @@ Keep HTTP, file IO and decoding off the audio callback. Never commit API keys,
 DPAPI files, private media or raw diagnostic logs. Offline tests must never submit
 billable cloud tasks. Preserve original MIDI and mixed audio when selecting tracks.
 Update this specification and the user-facing workflow documentation with changes.
+
+## 0.0.4 branding — 2026-10-13
+
+Added an original purple D/audio-bar logo, editor header branding, native application icons, Windows Setup/uninstall/wizard graphics and a Mac installer welcome page. Master PNG and ICO are in assets, with the generation prompt and provenance in assets/BRAND.en.md. Installer version is 0.0.4; earlier packages do not include this branding. Mac manual installation and host validation remain outstanding.

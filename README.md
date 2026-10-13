@@ -1,5 +1,9 @@
 # Duomi Suno AI Bridge — 简体中文
 
+<img src="assets/duomi-logo.png" width="96" height="96" alt="Duomi logo">
+
+0.0.4 新增统一 Logo：程序图标、界面左上角及安装包品牌图形。详情见 [Logo 说明](assets/BRAND.md)。
+
 **简体中文** | [English](README.en.md)
 
 在 Ableton Live 等 DAW 内生成音乐、提取 MIDI、试听并拖出 MIDI/WAV 的 JUCE 插件。

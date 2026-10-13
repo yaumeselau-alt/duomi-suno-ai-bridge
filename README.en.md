@@ -1,5 +1,9 @@
 # Duomi Suno AI Bridge — English
 
+<img src="assets/duomi-logo.png" width="96" height="96" alt="Duomi logo">
+
+Version 0.0.4 adds the application, editor and installer logo. See the [brand assets](assets/BRAND.en.md).
+
 [简体中文](README.md) | **English**
 
 A JUCE instrument plugin for generating music through Duomi, extracting MIDI,
@@ -63,7 +67,7 @@ Installers are retained for 14 days; diagnostic logs for 7 days.
 The first 0.0.2 Universal installer was produced in
 [run 38207700838](https://github.com/yaumeselau-alt/duomi-suno-ai-bridge/actions/runs/38207700838).
 **That older installer does not contain the 0.0.3 language selector.**
-Use an artifact built from the current 0.0.3 source for this feature.
+Use an artifact built from the current 0.0.4 source for this feature.
 
 CI uses a standard macos-15 runner, with a 45-minute limit, no Duomi key and no
 Apple certificates. It does not change your account's billing or budget settings.

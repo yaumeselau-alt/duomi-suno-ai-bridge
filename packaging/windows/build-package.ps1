@@ -42,6 +42,7 @@ Copy-Item -LiteralPath (Join-Path $root 'packaging/INSTALL.txt'),(Join-Path $roo
 Copy-Item -LiteralPath (Join-Path $root 'lib/JUCE/LICENSE.md') -Destination (Join-Path $stage 'licenses/JUCE-LICENSE.md')
 Copy-Item -LiteralPath (Join-Path $root 'lib/JUCE/JUCE.spdx.json') -Destination (Join-Path $stage 'licenses')
 Copy-Item -LiteralPath (Join-Path $root 'lib/JUCE/modules/juce_audio_processors_headless/format_types/VST3_SDK/LICENSE.txt') -Destination (Join-Path $stage 'licenses/VST3-LICENSE.txt')
+Copy-Item -LiteralPath (Join-Path $root 'assets/duomi-logo.ico'),(Join-Path $root 'assets/duomi-logo.png') -Destination $stage
 & $IsccPath "/DStageDir=$stage" "/DOutputDir=$dist" "/DAppVersion=$version" (Join-Path $PSScriptRoot 'installer.iss')
 if ($LASTEXITCODE -ne 0) { throw 'Installer compilation failed.' }
 $installer = Join-Path $dist "Duomi-Suno-AI-Bridge-$version-Windows-x64-Setup.exe"

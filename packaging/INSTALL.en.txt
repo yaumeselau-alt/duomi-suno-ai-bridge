@@ -1,9 +1,9 @@
-Duomi Suno AI Bridge 0.0.3 — Installation and use (English)
+Duomi Suno AI Bridge 0.0.4 — Installation and use (English)
 简体中文: INSTALL.txt
 
 Windows
 1. Save your project and close Live, other DAWs and this application.
-2. Run Duomi-Suno-AI-Bridge-0.0.3-Windows-x64-Setup.exe.
+2. Run Duomi-Suno-AI-Bridge-0.0.4-Windows-x64-Setup.exe.
 3. Default VST3 location:
    C:\Program Files\Common Files\VST3\Duomi Suno AI Bridge.vst3
 4. In Live: Settings > Plug-Ins > enable the VST3 system folder and rescan.

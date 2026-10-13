@@ -5,7 +5,7 @@ if [[ "$(uname -s)" != Darwin ]]; then
   exit 1
 fi
 root="$(cd "$(dirname "$0")/../.." && pwd)"
-for tool in cmake xcodebuild xcrun pkgbuild productbuild codesign lipo ditto; do
+for tool in cmake xcodebuild xcrun pkgbuild productbuild codesign lipo ditto python3; do
   command -v "$tool" >/dev/null || { echo "Missing tool: $tool" >&2; exit 1; }
 done
 if [[ ! -f "$root/lib/JUCE/CMakeLists.txt" ]]; then
@@ -84,14 +84,22 @@ done
 pkgbuild --root "$payload" --component-plist "$work/components.plist" \
   --identifier com.mrdream.duomisunoaibridge.installer --version "$version" \
   --install-location / "$work/component.pkg"
+resources="$work/resources"
+mkdir -p "$resources"
+cp "$root/assets/duomi-logo.png" "$resources/"
+cp "$root/packaging/macos/welcome.html" "$resources/"
+productbuild --synthesize --package "$work/component.pkg" "$work/Distribution.xml"
+python3 "$root/packaging/macos/configure-distribution.py" "$work/Distribution.xml"
 label=UNSIGNED
 [[ -z "$identity" ]] || label=SIGNED
 output="$root/dist/Duomi-Suno-AI-Bridge-$version-macOS-Universal-$label.pkg"
 if [[ -n "$installerIdentity" ]]; then
-  productbuild --package "$work/component.pkg" --sign "$installerIdentity" "$output"
+  productbuild --distribution "$work/Distribution.xml" --resources "$resources" \
+    --package-path "$work" --sign "$installerIdentity" "$output"
   pkgutil --check-signature "$output"
 else
-  productbuild --package "$work/component.pkg" "$output"
+  productbuild --distribution "$work/Distribution.xml" --resources "$resources" \
+    --package-path "$work" "$output"
 fi
 if [[ -n "$profile" ]]; then
   xcrun notarytool submit "$output" --keychain-profile "$profile" --wait

@@ -33,6 +33,7 @@ class DuomiSunoAIBridgeAudioProcessorEditor : public juce::AudioProcessorEditor,
   cyber::LookAndFeel theme;
   juce::TooltipWindow tooltips{this, 600};
   juce::Label titleLabel;
+  juce::ImageComponent brandLogo;
   juce::ComboBox languageChoice;
   duomi::Language displayedLanguage = duomi::Language::simplifiedChinese;
   juce::String fileStatusSource;

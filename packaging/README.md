@@ -2,7 +2,7 @@
 
 **简体中文** | [English](README.en.md)
 
-当前源版本为 **0.0.3**，新增语言选择；下方 0.0.2 安装包与校验值为历史交付记录。0.0.3 构建产物按新版本命名，不能用旧包验收双语功能。英文安装说明 INSTALL.en.txt 与中文说明一同随包提供。
+当前源版本为 **0.0.4**，新增语言选择；下方 0.0.2 安装包与校验值为历史交付记录。0.0.3 构建产物按新版本命名，不能用旧包验收双语功能。英文安装说明 INSTALL.en.txt 与中文说明一同随包提供。
 
 Windows 历史产物：dist/Duomi-Suno-AI-Bridge-0.0.2-Windows-x64-Setup.exe。
 
@@ -98,3 +98,7 @@ macOS 可能阻止安装，不能将 ad-hoc 校验通过当成 Gatekeeper 验收
 macos-repackage.yml 仅用于本次恢复，固定旧产物 ID 和 SHA256，产物过期后无法重用；
 它的 token 额外需要 actions:read。DUOMI_PREBUILT_DIR 仅用于已有可信、测试通过产物的打包恢复，
 不执行重新编译和测试。源码变更应使用正常完整构建。
+
+## 0.0.4 Logo（2026-10-13）
+
+程序使用 assets/duomi-logo.png；JUCE 自动生成 Windows/Mac 图标。Windows Setup、卸载条目及安装向导使用同一 Logo，卸载图标无需安装独立程序也可显示。Mac 使用带 Logo 的 HTML 欢迎页及应用图标；pkg 的 Finder 文件图标仍由系统决定。当前构建版本为 0.0.4。

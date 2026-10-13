@@ -5,7 +5,7 @@
   #error OutputDir is required
 #endif
 #ifndef AppVersion
-  #define AppVersion "0.0.3"
+  #define AppVersion "0.0.4"
 #endif
 [Setup]
 AppId={{2CF28632-0B53-4C47-A897-FCC64D1E6048}
@@ -25,9 +25,11 @@ PrivilegesRequiredOverridesAllowed=commandline
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile={#StageDir}\duomi-logo.ico
+WizardSmallImageFile={#StageDir}\duomi-logo.png
 CloseApplications=no
 RestartApplications=no
-UninstallDisplayIcon={app}\Duomi Suno AI Bridge.exe
+UninstallDisplayIcon={app}\duomi-logo.ico
 InfoBeforeFile={#StageDir}\INSTALL.txt
 SetupLogging=yes
 
@@ -40,6 +42,7 @@ Name: "vst3"; Description: "VST3 plugin for Ableton Live / other DAWs"; Types: f
 Name: "standalone"; Description: "Standalone application"; Types: full
 
 [Files]
+Source: "{#StageDir}\duomi-logo.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#StageDir}\Standalone\Duomi Suno AI Bridge.exe"; DestDir: "{app}"; Components: standalone; Flags: ignoreversion
 Source: "{#StageDir}\VST3\Duomi Suno AI Bridge.vst3\*"; DestDir: "{code:GetVst3Dir}\Duomi Suno AI Bridge.vst3"; Components: vst3; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#StageDir}\INSTALL.txt"; DestDir: "{app}"; Flags: ignoreversion
